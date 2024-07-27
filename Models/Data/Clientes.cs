@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Models.Data
 {
-    [Table("cliente")]
+    [Table("clientes")]
     public class Clientes
     {
         [Key]
@@ -18,7 +18,7 @@ namespace Models.Data
         public string? numero_identificacion { get; set; }
         public string? correo_electronico { get; set; }
         public int edad {  get; set; }
-        public int codigo_páis { get; set; }
+        public int codigo_pais { get; set; }
         public string? numero_telefono { get; set; }
         public bool active { get; set; }
         public DateTime fecha_control { get; set; }

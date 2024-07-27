@@ -28,12 +28,13 @@ namespace Bussines
                         numero_identificacion = request.numero_identificacion,
                         correo_electronico = request.correo_electronico,
                         edad = request.edad,
-                        codigo_páis = request.codigo_páis,
+                        codigo_pais = request.codigo_páis,
                         numero_telefono = request.numero_telefono,
                         active = request.active,
-                        fecha_control = DateTime.UtcNow,
-                        
+                        fecha_control = DateTime.Now,
+                        //fecha_actualizacion = DateTime.Now
                     };
+                      
               
                     _context!.Clientes.Add(cliente);
                     _context!.SaveChanges();
@@ -121,10 +122,10 @@ namespace Bussines
                         cliente.numero_identificacion = request.numero_identificacion;
                         cliente.correo_electronico = request.correo_electronico;
                         cliente.edad = request.edad;
-                        cliente.codigo_páis = request.codigo_páis;
+                        cliente.codigo_pais = request.codigo_páis;
                         cliente.numero_telefono = request.numero_telefono;
                         cliente.active = request.active;
-                        cliente.fecha_actualizacion = DateTime.UtcNow;
+                        cliente.fecha_actualizacion = DateTime.Now;
                         
                         _context!.Entry(cliente).State = EntityState.Modified;
                         _context!.SaveChanges();
