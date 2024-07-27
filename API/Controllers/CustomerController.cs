@@ -16,8 +16,14 @@ namespace API.Controllers
         {
             _cliente = cliente;
         }
+        [HttpGet("customer-id")]
+        public Clientes GetCustomerById( int id)
+        {
+            Clientes cliente = _cliente.GetCustomersById(id);
+            return cliente;
+        }
         [HttpGet("customers")]
-        public List<Clientes> GetAllCustomer(RequestCustomer customer)
+        public List<Clientes> GetAllCustomer()
         {
             List<Clientes> clientes = _cliente.GetCustomers();
             return clientes;
