@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Models.Contracts;
 using Models.Data;
 using Models.Dtos;
@@ -17,10 +18,13 @@ namespace API.Controllers
             _cliente = cliente;
         }
         [HttpGet("customer-id")]
-        public Clientes GetCustomerById( int id)
+        public object GetCustomerById( string id)
         {
             Clientes cliente = _cliente.GetCustomersById(id);
-            return cliente;
+            return new
+            {
+                Cliente = cliente,
+            };
         }
         [HttpGet("customers")]
         public List<Clientes> GetAllCustomer()
@@ -32,14 +36,29 @@ namespace API.Controllers
         [HttpPost("add-customer")]
         public ResponseCustomer AddCustomer( RequestCustomer customer )
         {
-            ResponseCustomer res = _cliente.AddCustomer( customer );
-            return res;
+            if(ModelState.IsValid)
+            {
+                ResponseCustomer res = _cliente.AddCustomer( customer );
+                return res;
+            }
+            return null;
         }
         [HttpPut("update-customer")]
         public ResponseCustomer UpdateCustomer( RequestCustomer customer )
         {
-            ResponseCustomer res = _cliente.UpdateCustomer(customer);
-            return res;
+            if(!customer.numero_identificacion.IsNullOrEmpty())
+            {
+                ResponseCustomer res = _cliente.UpdateCustomer(customer);
+                return res;
+            }
+            else
+            {
+                return new ResponseCustomer
+                {
+                    idError = 1,
+                    message = "Numero de identificacion es necesario"
+                };
+            }
         }
         [HttpDelete("delete-customer")]
         public ResponseCustomer DeleteCustomer( int id )

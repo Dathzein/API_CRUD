@@ -14,6 +14,6 @@ namespace Models.Contracts
         ResponseCustomer UpdateCustomer(RequestCustomer request);
         ResponseCustomer DeleteCustomer(int id);
         List<Clientes> GetCustomers();
-        Clientes GetCustomersById(int id);
+        Clientes GetCustomersById(string id);
     }
 }

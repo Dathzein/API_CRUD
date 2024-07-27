@@ -1,4 +1,5 @@
-﻿using DataAcces;
+﻿using Azure.Core;
+using DataAcces;
 using Microsoft.EntityFrameworkCore;
 using Models.Contracts;
 using Models.Data;
@@ -28,11 +29,11 @@ namespace Bussines
                         numero_identificacion = request.numero_identificacion,
                         correo_electronico = request.correo_electronico,
                         edad = request.edad,
-                        codigo_pais = request.codigo_páis,
+                        codigo_pais = request.codigo_pais,
                         numero_telefono = request.numero_telefono,
                         active = request.active,
                         fecha_control = DateTime.Now,
-                        //fecha_actualizacion = DateTime.Now
+                        //fecha_actualizacion = 
                     };
                       
               
@@ -59,7 +60,12 @@ namespace Bussines
             catch (Exception ex)
             {
 
-                throw;
+                return new ResponseCustomer
+                {
+                    idError = -1,
+                    message = "Ocurrrio un error al ejecutar esta accion"
+                };
+                //Crear una tabla que guarde el error
             }
         }
         public List<Clientes> GetCustomers()
@@ -81,15 +87,15 @@ namespace Bussines
             catch (Exception ex)
             {
 
-                throw;
+                return null;
             }
         }
-
-        public Clientes GetCustomersById(int id)
+        //Modificar depornto pñara que consulte mas bien por documento y no id xdxd
+        public Clientes GetCustomersById(string id)
         {
             try
             {
-                Clientes? cliente = _context!.Clientes.Where(x => x.Id == id).FirstOrDefault();
+                Clientes? cliente = _context!.Clientes.Where(x => x.numero_identificacion == id).FirstOrDefault();
                 if( cliente == null)
                 {
                     //no se hayaron registros
@@ -103,8 +109,8 @@ namespace Bussines
             }
             catch (Exception ex)
             {
-
-                throw;
+                 return null;
+                //Crear una tabla que guarde el error
             }
         }
         public ResponseCustomer UpdateCustomer(RequestCustomer request)
@@ -117,13 +123,13 @@ namespace Bussines
                     if(cliente != null)
                     {
 
-                        cliente.nombre = request.nombre;
-                        cliente.codigo_identificacion = request.codigo_identificacion;
-                        cliente.numero_identificacion = request.numero_identificacion;
-                        cliente.correo_electronico = request.correo_electronico;
-                        cliente.edad = request.edad;
-                        cliente.codigo_pais = request.codigo_páis;
-                        cliente.numero_telefono = request.numero_telefono;
+                        cliente.nombre = request.nombre != null ? request.nombre : cliente.nombre;
+                        cliente.codigo_identificacion = request.codigo_identificacion < 0 ? cliente.codigo_identificacion : request.codigo_identificacion;
+                        cliente.numero_identificacion = request.numero_identificacion != null ? request.numero_identificacion : cliente.numero_identificacion;
+                        cliente.correo_electronico = request.correo_electronico != null ? request.correo_electronico : cliente.correo_electronico;
+                        cliente.edad = request.edad < 0 ? cliente.edad : request.edad;
+                        cliente.codigo_pais = request.codigo_pais < 0 ? cliente.codigo_pais: request.codigo_pais;
+                        cliente.numero_telefono = request.numero_telefono != null ? request.numero_telefono : cliente.numero_telefono;
                         cliente.active = request.active;
                         cliente.fecha_actualizacion = DateTime.Now;
                         
@@ -150,7 +156,12 @@ namespace Bussines
             catch (Exception ex)
             {
 
-                throw;
+                return new ResponseCustomer
+                {
+                    idError = -1,
+                    message = "Ocurrrio un error al ejecutar esta accion"
+                };
+                //Crear una tabla que guarde el error
             }
         }
         public ResponseCustomer DeleteCustomer(int id)
@@ -181,7 +192,12 @@ namespace Bussines
             catch (Exception ex)
             {
 
-                throw;
+                return new ResponseCustomer
+                {
+                    idError = -1,
+                    message = "Ocurrrio un error al ejecutar esta accion"
+                };
+                //Crear una tabla que guarde el error
             }
         }
 
