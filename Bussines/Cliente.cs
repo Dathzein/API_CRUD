@@ -10,9 +10,9 @@ namespace Bussines
 {
     public class Cliente : ICliente
     {
-        private readonly BDontext? _context;
+        private readonly BDContext? _context;
 
-        public Cliente( BDontext context )
+        public Cliente( BDContext context )
         {
             _context = context;
         }
@@ -23,29 +23,41 @@ namespace Bussines
             {
                 if(request != null) 
                 {
-                    Clientes cliente = new Clientes
+                    Clientes? cliente = _context!.Clientes.Where(x => x.numero_identificacion == request.numero_identificacion).FirstOrDefault();
+                    if(cliente == null)
                     {
-                        nombre = request.nombre,
-                        codigo_identificacion = request.codigo_identificacion,
-                        numero_identificacion = request.numero_identificacion,
-                        correo_electronico = request.correo_electronico,
-                        edad = request.edad,
-                        codigo_pais = request.codigo_pais,
-                        numero_telefono = request.numero_telefono,
-                        active = request.active,
-                        fecha_control = DateTime.Now,
-                        //fecha_actualizacion = 
-                    };
-                      
-              
-                    _context!.Clientes.Add(cliente);
-                    _context!.SaveChanges();
+                        Clientes agregarCliente = new Clientes
+                        {
+                            nombre = request.nombre,
+                            codigo_identificacion = request.codigo_identificacion,
+                            numero_identificacion = request.numero_identificacion,
+                            correo_electronico = request.correo_electronico,
+                            edad = request.edad,
+                            codigo_pais = request.codigo_pais,
+                            numero_telefono = request.numero_telefono,
+                            active = request.active,
+                            fecha_control = DateTime.Now,
+                            //fecha_actualizacion = 
+                        };
 
-                    return new ResponseCustomer
+
+                        _context!.Clientes.Add(agregarCliente);
+                        _context!.SaveChanges();
+
+                        return new ResponseCustomer
+                        {
+                            idError = 0,
+                            message = "Cliente se agrego con exito"
+                        };
+                    }
+                    else
                     {
-                        idError = 0,
-                        message = "Cliente se agrego con exito"
-                    };
+                        return new ResponseCustomer
+                        {
+                            idError = 2,
+                            message = "El cliente ya existe"
+                        };
+                    }
                     
                 }
                 else

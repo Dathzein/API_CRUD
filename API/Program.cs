@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<BDontext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Api_Crud")).UseLazyLoadingProxies());
+builder.Services.AddDbContext<BDContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Api_Crud")).UseLazyLoadingProxies());
 
 builder.Services.AddScoped<ICliente, Cliente>();
 

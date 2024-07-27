@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Models.Contracts;
 using Models.Data;
@@ -18,6 +17,7 @@ namespace API.Controllers
         {
             _cliente = cliente;
         }
+
         [HttpGet("customer-id")]
         public object GetCustomerById( string id)
         {
