@@ -1,4 +1,5 @@
 ﻿using Models.Data;
+using Models.Data.Views;
 using Models.Dtos;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Models.Contracts
         ResponseCustomer AddCustomer(RequestCustomer request);
         ResponseCustomer UpdateCustomer(RequestCustomer request);
         ResponseCustomer DeleteCustomer(int id);
-        List<Clientes> GetCustomers();
+        List<Vw_Clientes> GetCustomers();
         Clientes GetCustomersById(string id);
     }
 }

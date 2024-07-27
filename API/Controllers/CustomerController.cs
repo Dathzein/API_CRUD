@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Models.Contracts;
 using Models.Data;
+using Models.Data.Views;
 using Models.Dtos;
 
 namespace API.Controllers
@@ -27,9 +28,9 @@ namespace API.Controllers
             };
         }
         [HttpGet("customers")]
-        public List<Clientes> GetAllCustomer()
+        public List<Vw_Clientes> GetAllCustomer()
         {
-            List<Clientes> clientes = _cliente.GetCustomers();
+            List<Vw_Clientes> clientes = _cliente.GetCustomers();
             return clientes;
         }
 

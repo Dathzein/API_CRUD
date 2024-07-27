@@ -3,6 +3,7 @@ using DataAcces;
 using Microsoft.EntityFrameworkCore;
 using Models.Contracts;
 using Models.Data;
+using Models.Data.Views;
 using Models.Dtos;
 
 namespace Bussines
@@ -68,11 +69,11 @@ namespace Bussines
                 //Crear una tabla que guarde el error
             }
         }
-        public List<Clientes> GetCustomers()
+        public List<Vw_Clientes> GetCustomers()
         {
             try
             {
-                List<Clientes> clientes = _context!.Clientes.ToList();
+                List<Vw_Clientes> clientes = _context!.Vw_Clientes.ToList();
                 if( clientes.Count > 0 )
                 {
                     //retornar la lista
