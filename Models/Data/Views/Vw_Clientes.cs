@@ -20,5 +20,6 @@ namespace Models.Data.Views
         public int edad { get; set; }
         public string? pais { get; set; }
         public string? numero_telefono { get; set; }
+        public string? Estado { get; set; }
     }
 }

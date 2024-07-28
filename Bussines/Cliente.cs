@@ -21,54 +21,42 @@ namespace Bussines
         {
             try
             {
-                if(request != null) 
+                Clientes? cliente = _context!.Clientes.Where(x => x.numero_identificacion == request.numero_identificacion).FirstOrDefault();
+                if (cliente == null)
                 {
-                    Clientes? cliente = _context!.Clientes.Where(x => x.numero_identificacion == request.numero_identificacion).FirstOrDefault();
-                    if(cliente == null)
+                    Clientes agregarCliente = new Clientes
                     {
-                        Clientes agregarCliente = new Clientes
-                        {
-                            nombre = request.nombre,
-                            codigo_identificacion = request.codigo_identificacion,
-                            numero_identificacion = request.numero_identificacion,
-                            correo_electronico = request.correo_electronico,
-                            edad = request.edad,
-                            codigo_pais = request.codigo_pais,
-                            numero_telefono = request.numero_telefono,
-                            active = request.active,
-                            fecha_control = DateTime.Now,
-                            //fecha_actualizacion = 
-                        };
+                        nombre = request.nombre,
+                        codigo_identificacion = request.codigo_identificacion,
+                        numero_identificacion = request.numero_identificacion,
+                        correo_electronico = request.correo_electronico,
+                        edad = request.edad,
+                        codigo_pais = request.codigo_pais,
+                        numero_telefono = request.numero_telefono,
+                        active = request.active,
+                        fecha_control = DateTime.Now,
+                        //fecha_actualizacion = 
+                    };
 
 
-                        _context!.Clientes.Add(agregarCliente);
-                        _context!.SaveChanges();
+                    _context!.Clientes.Add(agregarCliente);
+                    _context!.SaveChanges();
 
-                        return new ResponseCustomer
-                        {
-                            idError = 0,
-                            message = "Cliente se agrego con exito"
-                        };
-                    }
-                    else
+                    return new ResponseCustomer
                     {
-                        return new ResponseCustomer
-                        {
-                            idError = 2,
-                            message = "El cliente ya existe"
-                        };
-                    }
-                    
+                        idError = 0,
+                        message = "Cliente se agrego con exito"
+                    };
                 }
                 else
                 {
-                    //Return string los campos estan incompletos
                     return new ResponseCustomer
                     {
-                        idError = 1,
-                        message = "Los campos deben estar completos"
+                        idError = 2,
+                        message = "El cliente ya existe"
                     };
                 }
+
             }
             catch (Exception ex)
             {
@@ -85,21 +73,17 @@ namespace Bussines
         {
             try
             {
-                List<Vw_Clientes> clientes = _context!.Vw_Clientes.ToList();
-                if( clientes.Count > 0 )
+                List<Vw_Clientes> clientes = _context!.Vw_Clientes.Where(x=> x.Estado.Equals("Activo")).ToList();
+                if( clientes.Count > 0 )   
                 {
                     //retornar la lista
                     return clientes;
                 }
-                else
-                {
-                    //nose hayaron registros
-                    return clientes;
-                }
+                //nose hayaron registros
+                return null;
             }
             catch (Exception ex)
             {
-
                 return null;
             }
         }
@@ -114,11 +98,11 @@ namespace Bussines
                     //no se hayaron registros
                     return cliente;
                 }
-                else
-                {
-                    //retorna cliente
-                    return cliente;
-                }
+
+                //retorna cliente
+                return cliente;
+
+
             }
             catch (Exception ex)
             {
@@ -132,17 +116,17 @@ namespace Bussines
             {
                 if (request != null)
                 {
-                    Clientes? cliente = _context!.Clientes.Where(x => x.numero_identificacion == x.numero_identificacion).FirstOrDefault();
+                    Clientes? cliente = _context!.Clientes.Where(x => x.numero_identificacion == request.numero_identificacion).FirstOrDefault();
                     if(cliente != null)
                     {
 
-                        cliente.nombre = request.nombre != null ? request.nombre : cliente.nombre;
+                        cliente.nombre = !string.IsNullOrEmpty(request.nombre) ? request.nombre : cliente.nombre;
                         cliente.codigo_identificacion = request.codigo_identificacion < 0 ? cliente.codigo_identificacion : request.codigo_identificacion;
-                        cliente.numero_identificacion = request.numero_identificacion != null ? request.numero_identificacion : cliente.numero_identificacion;
-                        cliente.correo_electronico = request.correo_electronico != null ? request.correo_electronico : cliente.correo_electronico;
+                        cliente.numero_identificacion = !string.IsNullOrEmpty(request.numero_identificacion) ? request.numero_identificacion : cliente.numero_identificacion;
+                        cliente.correo_electronico = !string.IsNullOrEmpty(request.correo_electronico) ? request.correo_electronico : cliente.correo_electronico;
                         cliente.edad = request.edad < 0 ? cliente.edad : request.edad;
                         cliente.codigo_pais = request.codigo_pais < 0 ? cliente.codigo_pais: request.codigo_pais;
-                        cliente.numero_telefono = request.numero_telefono != null ? request.numero_telefono : cliente.numero_telefono;
+                        cliente.numero_telefono = !string.IsNullOrEmpty(request.numero_telefono) ? request.numero_telefono : cliente.numero_telefono;
                         cliente.active = request.active;
                         cliente.fecha_actualizacion = DateTime.Now;
                         
