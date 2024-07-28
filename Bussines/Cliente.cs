@@ -11,12 +11,19 @@ namespace Bussines
     public class Cliente : ICliente
     {
         private readonly BDContext? _context;
+        private readonly ILog _log;
 
-        public Cliente( BDContext context )
+        public Cliente( BDContext context, ILog log )
         {
             _context = context;
+            _log = log;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public ResponseCustomer AddCustomer(RequestCustomer request)
         {
             try
@@ -60,11 +67,11 @@ namespace Bussines
             }
             catch (Exception ex)
             {
-
+                _log!.RegistrarError(0, "AddCostumer", ex.ToString());
                 return new ResponseCustomer
                 {
                     idError = -1,
-                    message = "Ocurrrio un error al ejecutar esta accion"
+                    message = "Ha ocurrido un error revisar log de error"
                 };
                 //Crear una tabla que guarde el error
             }
@@ -143,6 +150,7 @@ namespace Bussines
                 else
                 {
                     //Return string los campos estan incompletos
+
                     return new ResponseCustomer
                     {
                         idError = 1,
@@ -152,11 +160,11 @@ namespace Bussines
             }
             catch (Exception ex)
             {
-
+                _log!.RegistrarError(0, "UpdateCostumer", ex.ToString());
                 return new ResponseCustomer
                 {
                     idError = -1,
-                    message = "Ocurrrio un error al ejecutar esta accion"
+                    message = "Ha ocurrido un error revisar log de error"
                 };
                 //Crear una tabla que guarde el error
             }
@@ -188,11 +196,11 @@ namespace Bussines
             }
             catch (Exception ex)
             {
-
+                _log!.RegistrarError(0, "DeleteCostumer", ex.ToString());
                 return new ResponseCustomer
                 {
                     idError = -1,
-                    message = "Ocurrrio un error al ejecutar esta accion"
+                    message = "Ha ocurrido un error revisar log de error"
                 };
                 //Crear una tabla que guarde el error
             }

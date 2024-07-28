@@ -43,14 +43,40 @@ CREATE TABLE clientes(
 
 CREATE INDEX idx_numero_identificacion ON clientes(numero_identificacion)
 
-INSERT INTO catalogo_codigo_pais VALUES (57,'Colombia',1,GETDATE(),GETDATE())
-INSERT INTO catalogo_tipo_identificacion VALUES (1,'Cedula de Ciudadania',1,GETDATE(),GETDATE())
+CREATE TABLE roles(
+	id INT IDENTITY PRIMARY KEY,
+	role_nombre NVARCHAR(100) NOT NULL,
+	active BIT NOT NULL,
+	fecha_control DATETIME2 NOT NULL,
+	fecha_actualizacion DATETIME2,
+)
 
---Selects
-Select * from catalogo_codigo_pais
-Select * from catalogo_tipo_identificacion
-select * from clientes
-select * from vw_clientes
+CREATE INDEX idx_role_nombre ON roles(role_nombre)
+
+CREATE TABLE usuario(
+	id INT IDENTITY PRIMARY KEY,
+	usuario NVARCHAR(MAX) NOT NULL,
+	contrasena NVARCHAR(MAX)NOT NULL,
+	codigo_identificacion INT NOT NULL,
+	numero_identificacion NVARCHAR(100) NOT NULL,
+	active BIT NOT NULL,
+	id_role INT NOT NULL,
+	fecha_control DATETIME2 NOT NULL,
+	fecha_actualizacion DATETIME2,
+	FOREIGN KEY (codigo_identificacion) REFERENCES catalogo_tipo_identificacion(id),
+	FOREIGN KEY (id_role) REFERENCES roles(id),
+)
+CREATE INDEX idx_numero_identificacion ON usuario(numero_identificacion)
+
+CREATE TABLE logs(
+	id INT IDENTITY PRIMARY KEY,
+	id_usuario INT NOT NULL,
+	metodo NVARCHAR(100) NOT NULL,
+	excepcion NVARCHAR(MAX),
+	fecha_control DATETIME2 NOT NULL,
+	FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+)
+
 --vistas
 CREATE VIEW vw_clientes
 AS
@@ -67,4 +93,17 @@ AS
 	FROM clientes a 
 	INNER JOIN catalogo_codigo_pais b ON b.id = a.codigo_pais
 	INNER JOIN catalogo_tipo_identificacion c ON c.codigo_identificacion = a.codigo_identificacion WHERE a.active = 1
+Select * from catalogo_codigo_pais
+Select * from catalogo_tipo_identificacion
+select * from roles
+select * from usuario
+select * from logs
+select * from clientes
+select * from vw_clientes
+
+--INSERTS
+INSERT INTO catalogo_codigo_pais VALUES (57,'Colombia',1,GETDATE(),GETDATE())
+INSERT INTO catalogo_tipo_identificacion VALUES (1,'Cedula de Ciudadania',1,GETDATE(),GETDATE())
+INSERT INTO roles VALUES ('administrador',1,GETDATE(),GETDATE())
+INSERT INTO roles VALUES ('registrador',1,GETDATE(),GETDATE())
 

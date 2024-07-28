@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Models.Contracts;
 using Models.Data;
@@ -17,7 +18,7 @@ namespace API.Controllers
         {
             _cliente = cliente;
         }
-
+        [Authorize]
         [HttpGet("customer-id")]
         public object GetCustomerById( string id)
         {
@@ -27,13 +28,14 @@ namespace API.Controllers
                 Cliente = cliente,
             };
         }
+        [Authorize]
         [HttpGet("customers")]
         public List<Vw_Clientes> GetAllCustomer()
         {
             List<Vw_Clientes> clientes = _cliente.GetCustomers();
             return clientes;
         }
-
+        [Authorize]
         [HttpPost("add-customer")]
         public ResponseCustomer AddCustomer( RequestCustomer customer )
         {
@@ -44,6 +46,7 @@ namespace API.Controllers
             }
             return null;
         }
+        [Authorize]
         [HttpPut("update-customer")]
         public ResponseCustomer UpdateCustomer( RequestCustomer customer )
         {
@@ -61,6 +64,7 @@ namespace API.Controllers
                 };
             }
         }
+        [Authorize]
         [HttpDelete("delete-customer")]
         public ResponseCustomer DeleteCustomer( int id )
         {
