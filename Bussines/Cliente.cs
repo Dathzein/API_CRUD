@@ -20,9 +20,10 @@ namespace Bussines
         }
 
         /// <summary>
-        /// 
+        /// Metodo que agrga un cliente nuevo a la base de datos
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">Cliente nuevo a agregar</param>
+        /// <param name="id">Id usuario para registrar traza en log de error</param>
         /// <returns></returns>
         public ResponseCustomer AddCustomer(RequestCustomer request, int id)
         {
@@ -75,6 +76,11 @@ namespace Bussines
                 //Crear una tabla que guarde el error
             }
         }
+        /// <summary>
+        /// Metodo que consulta todos los clientes registrados
+        /// </summary>
+        /// <param name="id">Id usuario para registrar traza en log de error</param>
+        /// <returns></returns>
         public ResponseGetCustomers GetCustomers(int id)
         {
             ResponseGetCustomers res = new ResponseGetCustomers();
@@ -101,7 +107,12 @@ namespace Bussines
                 return res;
             }
         }
-       
+        /// <summary>
+        /// Metodo para Consultar un cliente en especifico
+        /// </summary>
+        /// <param name="id"> Numero de identificacion para buscar el cliente</param>
+        /// <param name="idUser">Id usuario para registrar traza en log de error</param>
+        /// <returns></returns>
         public ResponseGetCustomers GetCustomersById(string id, int idUser)
         {
             ResponseGetCustomers res = new ResponseGetCustomers();
@@ -132,6 +143,12 @@ namespace Bussines
                 //Crear una tabla que guarde el error
             }
         }
+        /// <summary>
+        /// Metodo para actualizar un cliente
+        /// </summary>
+        /// <param name="request">Datos del cliente que se va actualizar</param>
+        /// <param name="id">Id usuario para registrar traza en log de error</param>
+        /// <returns></returns>
         public ResponseCustomer UpdateCustomer(RequestCustomer request, int id)
         {
             try
@@ -184,6 +201,12 @@ namespace Bussines
                 //Crear una tabla que guarde el error
             }
         }
+        /// <summary>
+        /// Metodo para eliminar un cliente
+        /// </summary>
+        /// <param name="id">Id de usuario para eliminar cliente</param>
+        /// <param name="idUser">Id usuario para registrar traza en log de error</param>
+        /// <returns></returns>
         public ResponseCustomer DeleteCustomer(int id, int idUser)
         {
             try

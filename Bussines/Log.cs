@@ -17,7 +17,12 @@ namespace Bussines
         {
             _context = context;
         }
-
+        /// <summary>
+        /// Metodo que guarda la traza de las excepciones
+        /// </summary>
+        /// <param name="idUsuario">Id usuario para registrar traza en log de error</param>
+        /// <param name="metodo">Metodo en el que se genero la excepcion</param>
+        /// <param name="ex">Excepcion para conocer cual fue la causa</param>
         public void RegistrarError(int idUsuario, string metodo, string ex)
         {
             try

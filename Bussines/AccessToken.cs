@@ -1,5 +1,6 @@
 ﻿
 using DataAcces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Models.Contracts;
 using Models.Data;
@@ -23,7 +24,11 @@ namespace Bussines
             _context = context;
             _log = log;
         }
-
+        /// <summary>
+        /// Metodo para registrar un usuario
+        /// </summary>
+        /// <param name="newUser">Usuario que se va registrar</param>
+        /// <returns></returns>
         public RegisterResponse Registrar(RegisterRequest newUser)
         {
 
@@ -75,14 +80,18 @@ namespace Bussines
                 };
             }
         }
-
+        /// <summary>
+        /// Metodo que valida la existencia del usuario
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public UserResponse ValidarCredenciales(LoginRequest request)
         {
             UserResponse response = new UserResponse();
 
             try
             {
-                Usuarios? usuario = _context.Usuarios!.Where(x => x.usuario.Equals(request.usuario) && x.contrasena.Equals(request.clave) && x.active == true).FirstOrDefault();
+                Usuarios? usuario = _context.Usuarios.FromSqlRaw("SELECT * FROM usuario WHERE usuario = @p0 AND contrasena = @p1 AND active = @p2",request.usuario, request.clave, true).FirstOrDefault();
                 if (usuario != null)
                 {
                     if (usuario.active)
