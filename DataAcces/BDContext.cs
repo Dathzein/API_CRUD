@@ -10,6 +10,7 @@ namespace DataAcces
 
         public virtual DbSet<Clientes> Clientes { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Logs> Logs { get; set; }
         public virtual DbSet<Vw_Clientes> Vw_Clientes { get; set; }
     }

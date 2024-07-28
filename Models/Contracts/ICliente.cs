@@ -11,10 +11,10 @@ namespace Models.Contracts
 {
     public interface ICliente
     {
-        ResponseCustomer AddCustomer(RequestCustomer request);
-        ResponseCustomer UpdateCustomer(RequestCustomer request);
-        ResponseCustomer DeleteCustomer(int id);
-        List<Vw_Clientes> GetCustomers();
-        Clientes GetCustomersById(string id);
+        ResponseCustomer AddCustomer(RequestCustomer request, int id);
+        ResponseCustomer UpdateCustomer(RequestCustomer request, int id);
+        ResponseCustomer DeleteCustomer(int id, int idUser);
+        ResponseGetCustomers GetCustomers(int id);
+        ResponseGetCustomers GetCustomersById(string id, int idUser);
     }
 }

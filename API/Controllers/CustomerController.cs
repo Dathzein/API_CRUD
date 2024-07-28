@@ -14,34 +14,42 @@ namespace API.Controllers
     {
         //readonly form bussines
         private readonly ICliente _cliente;
-        public CustomerController( ICliente cliente)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public CustomerController( ICliente cliente, IHttpContextAccessor httpContextAccessor)
         {
             _cliente = cliente;
+            _httpContextAccessor = httpContextAccessor;
         }
         [Authorize]
         [HttpGet("customer-id")]
-        public object GetCustomerById( string id)
+        public ResponseGetCustomers GetCustomerById( string identificacion)
         {
-            Clientes cliente = _cliente.GetCustomersById(id);
-            return new
-            {
-                Cliente = cliente,
-            };
+            var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+
+            ResponseGetCustomers res = _cliente.GetCustomersById(identificacion, Int32.Parse(idUsuario));
+            
+            return res;
         }
         [Authorize]
         [HttpGet("customers")]
-        public List<Vw_Clientes> GetAllCustomer()
+        public ResponseGetCustomers GetAllCustomer()
         {
-            List<Vw_Clientes> clientes = _cliente.GetCustomers();
-            return clientes;
+            var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+
+            ResponseGetCustomers res = _cliente.GetCustomers(Int32.Parse(idUsuario));
+
+            return res;
         }
         [Authorize]
         [HttpPost("add-customer")]
         public ResponseCustomer AddCustomer( RequestCustomer customer )
         {
-            if(ModelState.IsValid)
+            var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+
+            if (ModelState.IsValid)
             {
-                ResponseCustomer res = _cliente.AddCustomer( customer );
+                ResponseCustomer res = _cliente.AddCustomer( customer, Int32.Parse(idUsuario));
                 return res;
             }
             return null;
@@ -50,9 +58,11 @@ namespace API.Controllers
         [HttpPut("update-customer")]
         public ResponseCustomer UpdateCustomer( RequestCustomer customer )
         {
-            if(!customer.numero_identificacion.IsNullOrEmpty())
+            var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+
+            if (!customer.numero_identificacion.IsNullOrEmpty())
             {
-                ResponseCustomer res = _cliente.UpdateCustomer(customer);
+                ResponseCustomer res = _cliente.UpdateCustomer(customer, Int32.Parse(idUsuario));
                 return res;
             }
             else
@@ -68,7 +78,9 @@ namespace API.Controllers
         [HttpDelete("delete-customer")]
         public ResponseCustomer DeleteCustomer( int id )
         {
-            ResponseCustomer res = _cliente.DeleteCustomer(id);
+            var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+
+            ResponseCustomer res = _cliente.DeleteCustomer(id, Int32.Parse(idUsuario));
             return res;
         }
     }

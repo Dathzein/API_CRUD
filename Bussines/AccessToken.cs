@@ -26,31 +26,42 @@ namespace Bussines
 
         public RegisterResponse Registrar(RegisterRequest newUser)
         {
+
             RegisterResponse response = new RegisterResponse();
 
             try
             {
-                Usuarios? usuario = _context.Usuarios!.Where(x => x.usuario!.Equals(newUser.usuario)).FirstOrDefault();
+                Usuarios? usuario = _context.Usuarios!.Where(x => x.usuario!.Equals(newUser.usuario) && x.active == true).FirstOrDefault();
                 if (usuario == null)
                 {
-                    Usuarios usuarios = new Usuarios {
-                        usuario = newUser.usuario,
-                        contrasena = newUser.clave,
-                        codigo_identificacion = newUser.codigo_identificacion,
-                        numero_identificacion = newUser.numero_identificacion,
-                        id_role =  newUser.id_role,
-                        active = true,
-                        fecha_control = DateTime.Now,
-                    }; 
-                    _context.Usuarios.Add(usuarios);
-                    _context.SaveChanges();
-                    response.idError = 0;
-                    response.message = "Usuario creado";
+                    Roles rol = _context.Roles.Where(x => x.id == newUser.id_role && x.active == true).FirstOrDefault()!;
+                    if(rol != null)
+                    {
+                        Usuarios usuarios = new Usuarios
+                        {
+                            usuario = newUser.usuario,
+                            contrasena = newUser.clave,
+                            codigo_identificacion = newUser.codigo_identificacion,
+                            numero_identificacion = newUser.numero_identificacion,
+                            id_role = newUser.id_role,
+                            active = true,
+                            fecha_control = DateTime.Now,
+                        };
+                        _context.Usuarios.Add(usuarios);
+                        _context.SaveChanges();
+                        response.idError = 0;
+                        response.message = "Usuario creado";
+                    }
+                    else
+                    {
+                        response.idError = 2;
+                        response.message = "Rol no existe o esta inactivo";
+                    }
                 }
                 else
                 {
                     response.idError = 1;
-                    response.message = "Usuario ya existe";
+                    response.message = "Usuario ya existe o esta inactivo";
                 }
                 return response;
             }

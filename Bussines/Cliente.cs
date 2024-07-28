@@ -24,7 +24,7 @@ namespace Bussines
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public ResponseCustomer AddCustomer(RequestCustomer request)
+        public ResponseCustomer AddCustomer(RequestCustomer request, int id)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Bussines
             }
             catch (Exception ex)
             {
-                _log!.RegistrarError(0, "AddCostumer", ex.ToString());
+                _log!.RegistrarError(id, "AddCostumer", ex.ToString());
                 return new ResponseCustomer
                 {
                     idError = -1,
@@ -76,48 +76,62 @@ namespace Bussines
                 //Crear una tabla que guarde el error
             }
         }
-        public List<Vw_Clientes> GetCustomers()
+        public ResponseGetCustomers GetCustomers(int id)
         {
+            ResponseGetCustomers res = new ResponseGetCustomers();
             try
             {
                 List<Vw_Clientes> clientes = _context!.Vw_Clientes.Where(x=> x.Estado.Equals("Activo")).ToList();
                 if( clientes.Count > 0 )   
                 {
-                    //retornar la lista
-                    return clientes;
+                    res.idError = 0;
+                    res.message = "Proceso exitoso.";
+                    res.Cliente = null;
+                    res.Clientes = clientes;
+                    //no se hayaron registros
+                    return res;
                 }
                 //nose hayaron registros
-                return null;
+                return res;
             }
             catch (Exception ex)
             {
+                _log!.RegistrarError(id, "GetCustomers", ex.ToString());
                 return null;
             }
         }
         //Modificar depornto pñara que consulte mas bien por documento y no id xdxd
-        public Clientes GetCustomersById(string id)
+        public ResponseGetCustomers GetCustomersById(string id, int idUser)
         {
+            ResponseGetCustomers res = new ResponseGetCustomers();
             try
             {
                 Clientes? cliente = _context!.Clientes.Where(x => x.numero_identificacion == id).FirstOrDefault();
-                if( cliente == null)
+                if( cliente != null)
                 {
+                    res.idError = 0;
+                    res.message = "Proceso exitoso.";
+                    res.Cliente = cliente;
+                    res.Clientes = null;
                     //no se hayaron registros
-                    return cliente;
+                    return res;
                 }
 
                 //retorna cliente
-                return cliente;
+                return res;
 
 
             }
             catch (Exception ex)
             {
-                 return null;
+                _log!.RegistrarError(idUser, "GetCustomers", ex.ToString());
+                res.idError = -1;
+                res.message = "Ha ocurrido un error revisar log de error";
+                return res;
                 //Crear una tabla que guarde el error
             }
         }
-        public ResponseCustomer UpdateCustomer(RequestCustomer request)
+        public ResponseCustomer UpdateCustomer(RequestCustomer request, int id)
         {
             try
             {
@@ -160,7 +174,7 @@ namespace Bussines
             }
             catch (Exception ex)
             {
-                _log!.RegistrarError(0, "UpdateCostumer", ex.ToString());
+                _log!.RegistrarError(id, "UpdateCostumer", ex.ToString());
                 return new ResponseCustomer
                 {
                     idError = -1,
@@ -169,7 +183,7 @@ namespace Bussines
                 //Crear una tabla que guarde el error
             }
         }
-        public ResponseCustomer DeleteCustomer(int id)
+        public ResponseCustomer DeleteCustomer(int id, int idUser)
         {
             try
             {
@@ -196,7 +210,7 @@ namespace Bussines
             }
             catch (Exception ex)
             {
-                _log!.RegistrarError(0, "DeleteCostumer", ex.ToString());
+                _log!.RegistrarError(idUser, "DeleteCostumer", ex.ToString());
                 return new ResponseCustomer
                 {
                     idError = -1,

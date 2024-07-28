@@ -15,6 +15,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIiLCJyb2xlIjoiMiIsIm5iZiI6MTcyMjE4MzA2OCwiZXhwIjoxNzIyMTkyMDY4LCJpYXQiOjE3MjIxODMwNjh9.fY7Estj45jNL5oDA1GNb8xENOhBb1TTQAkrJ-HAZpGk",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -50,7 +60,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIiLCJyb2xlIjoiMiIsIm5iZiI6MTcyMjE3NDY3MywiZXhwIjoxNzIyMTgzNjczLCJpYXQiOjE3MjIxNzQ2NzN9.Vc4Sd0YtxBZ_rxLVTwO3w9BFKplTBprjwt38FvMbHD4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIiLCJyb2xlIjoiMiIsIm5iZiI6MTcyMjE4MzA2OCwiZXhwIjoxNzIyMTkyMDY4LCJpYXQiOjE3MjIxODMwNjh9.fY7Estj45jNL5oDA1GNb8xENOhBb1TTQAkrJ-HAZpGk",
 									"type": "string"
 								}
 							]
@@ -58,7 +68,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5026/api/Customer/customer-id?id=1073707567",
+							"raw": "http://localhost:5026/api/Customer/customer-id?identificacion=1073707567",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -71,7 +81,7 @@
 							],
 							"query": [
 								{
-									"key": "id",
+									"key": "identificacion",
 									"value": "1073707567"
 								}
 							]

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Models.Data;
+using Models.Data.Views;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -25,6 +27,14 @@ namespace Models.Dtos
     {
         public int idError { get; set; }
         public string? message { get; set; }
+    }
+    public class ResponseGetCustomers
+    {
+        public int idError { get; set;}
+        public string? message { get; set; }
+        public List<Vw_Clientes>? Clientes { get; set; }
+        public Clientes? Cliente { get; set; }
+
     }
 }
     
