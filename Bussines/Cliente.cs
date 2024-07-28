@@ -41,8 +41,7 @@ namespace Bussines
                         codigo_pais = request.codigo_pais,
                         numero_telefono = request.numero_telefono,
                         active = request.active,
-                        fecha_control = DateTime.Now,
-                        //fecha_actualizacion = 
+                        fecha_control = DateTime.Now
                     };
 
 
@@ -97,10 +96,12 @@ namespace Bussines
             catch (Exception ex)
             {
                 _log!.RegistrarError(id, "GetCustomers", ex.ToString());
-                return null;
+                res.idError = -1;
+                res.message = "Ha ocurrido un error revisar log de error";
+                return res;
             }
         }
-        //Modificar depornto pñara que consulte mas bien por documento y no id xdxd
+       
         public ResponseGetCustomers GetCustomersById(string id, int idUser)
         {
             ResponseGetCustomers res = new ResponseGetCustomers();
