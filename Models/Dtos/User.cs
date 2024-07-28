@@ -35,7 +35,9 @@ namespace Models.Dtos
         public int idError { get; set; }
         public string? message { get; set; }
         public string? token { get; set; }
-        public DateTime expires { get; set; }
+        public DateTime expiresDate { get; set; }
+        public double expires { get; set; }
+
     }
     public class UserResponse
     {

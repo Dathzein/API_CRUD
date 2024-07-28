@@ -21,9 +21,10 @@ namespace TestProject
         [Fact]
         public void Test1_NullableObjects()
         {
-            Cliente _cliente = new Cliente(_context);
+            Log log = new Log(_context);
+            Cliente _cliente = new Cliente(_context, log);
             
-            var result = _cliente.AddCustomer(_testCliente);
+            var result = _cliente.AddCustomer(_testCliente, 0);
             _testCliente = null;
             //Debe generar un error ya que debe recibir campos
             Assert.Equal(-1,result.idError);
@@ -33,7 +34,8 @@ namespace TestProject
         [Fact]
         public void Test2_SaveData()
         {
-            Cliente _cliente = new Cliente(_context);
+            Log log = new Log(_context);
+            Cliente _cliente = new Cliente(_context, log);
             _testCliente = new RequestCustomer
             {
                 nombre = "JUAN PEREZ",
@@ -46,7 +48,7 @@ namespace TestProject
                 active = true
 
             };
-            var result = _cliente.AddCustomer(_testCliente);
+            var result = _cliente.AddCustomer(_testCliente, 0);
 
             //deberia registrar
             Assert.Equal(0, result.idError);
@@ -55,7 +57,8 @@ namespace TestProject
         [Fact]
         public void Test3_AlreadyExist()
         {
-            Cliente _cliente = new Cliente(_context);
+            Log log = new Log(_context);
+            Cliente _cliente = new Cliente(_context, log);
             //Si se cambia un valor del numero de identificacion este genera error porque ya va enviar un 0 como si no se hubiera registrado antes
             _testCliente = new RequestCustomer
             {
@@ -69,7 +72,7 @@ namespace TestProject
                 active = true
 
             };
-            _cliente.AddCustomer(_testCliente);
+            _cliente.AddCustomer(_testCliente, 0);
             _testCliente = new RequestCustomer
             {
                 nombre = "JUAN PEREZ",
@@ -82,7 +85,7 @@ namespace TestProject
                 active = true
 
             };
-            var result = _cliente.AddCustomer(_testCliente);
+            var result = _cliente.AddCustomer(_testCliente,0);
 
             //deberia generar error al registrar porque ya existe
             Assert.Equal(2, result.idError);
@@ -92,7 +95,8 @@ namespace TestProject
         [Fact]
         public void Test4_UpdateData()
         {
-            Cliente _cliente = new Cliente(_context);
+            Log log = new Log(_context);
+            Cliente _cliente = new Cliente(_context, log);
 
             _testCliente = new RequestCustomer
             {
@@ -106,7 +110,7 @@ namespace TestProject
                 active = true
 
             };
-            var result = _cliente.UpdateCustomer(_testCliente);
+            var result = _cliente.UpdateCustomer(_testCliente, 0);
 
             //deberia actualizar
             Assert.Equal(0, result.idError);
@@ -116,7 +120,8 @@ namespace TestProject
         [Fact]
         public void Test5_GetCustomer()
         {
-            Cliente _cliente = new Cliente(_context);
+            Log log = new Log(_context);
+            Cliente _cliente = new Cliente(_context, log);
             _testCliente = new RequestCustomer
             {
                 nombre = "JUAN PEREZ",
@@ -129,7 +134,7 @@ namespace TestProject
                 active = true
 
             };
-            _cliente.AddCustomer(_testCliente);
+            _cliente.AddCustomer(_testCliente, 0);
             _testCliente = new RequestCustomer
             {
                 nombre = "JUAN PEREZ",
@@ -142,7 +147,7 @@ namespace TestProject
                 active = true
 
             };
-            var result = _cliente.GetCustomersById(_testCliente.numero_identificacion);
+            var result = _cliente.GetCustomersById(_testCliente.numero_identificacion,0);
 
             //deberia Encontrar
             Assert.NotNull(result);
@@ -152,9 +157,10 @@ namespace TestProject
         [Fact]
         public void Test6_GetCustomers()
         {
-            Cliente _cliente = new Cliente(_context);
+            Log log = new Log(_context);
+            Cliente _cliente = new Cliente(_context, log);
 
-            var result = _cliente.GetCustomers();
+            var result = _cliente.GetCustomers(0);
 
             //no deberia Encontrar
             Assert.Null(result);
@@ -164,7 +170,8 @@ namespace TestProject
         [Fact]
         public void Test7_DeleteCustomer()
         {
-            Cliente _cliente = new Cliente(_context);
+            Log log = new Log(_context);
+            Cliente _cliente = new Cliente(_context, log);
             Clientes clienteTest = new Clientes
             {
                 Id = 1,
@@ -178,7 +185,7 @@ namespace TestProject
                 active = true
 
             };
-            var result = _cliente.DeleteCustomer(clienteTest.Id);
+            var result = _cliente.DeleteCustomer(clienteTest.Id, 0);
 
             //deberia Encontrar
             Assert.Equal(0, result.idError);

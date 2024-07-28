@@ -52,9 +52,8 @@ namespace API.Controllers
                     resp = _tokenFactory!.CreateToken(respuestaValidacion);
                     if (resp.idError == 0)
                     {
-                        var unixTimeMilliseconds = Math.Round(resp.expires.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds, 0);
                         resp.token = resp.token;
-                        resp.expires = DateTimeOffset.FromUnixTimeMilliseconds((long)unixTimeMilliseconds).UtcDateTime;
+                        resp.expires = Math.Round(resp.expiresDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds, 0);
                         resp.idError = 0;
 
                     }
