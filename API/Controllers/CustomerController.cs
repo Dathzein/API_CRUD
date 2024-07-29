@@ -28,9 +28,19 @@ namespace API.Controllers
         public ResponseGetCustomers GetCustomerById( string identificacion)
         {
             var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
-
-            ResponseGetCustomers res = _cliente.GetCustomersById(identificacion, Int32.Parse(idUsuario));
             
+            var idRole = _httpContextAccessor.GetContainerRoleFromClaims();
+            ResponseGetCustomers res = new ResponseGetCustomers();
+
+            if (idRole == "1" || idRole == "2")
+            {
+                res = _cliente.GetCustomersById(identificacion, Int32.Parse(idUsuario));
+                return res;                
+            }
+
+            res.message = "No esta autorizado ha hacer eso";
+            res.idError = 99;
+
             return res;
         }
         [Authorize]
@@ -38,8 +48,16 @@ namespace API.Controllers
         public ResponseGetCustomers GetAllCustomer()
         {
             var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+            var idRole = _httpContextAccessor.GetContainerRoleFromClaims();
+            ResponseGetCustomers res = new ResponseGetCustomers();
 
-            ResponseGetCustomers res = _cliente.GetCustomers(Int32.Parse(idUsuario));
+            if (idRole == "1" || idRole == "2")
+            {
+                res = _cliente.GetCustomers(Int32.Parse(idUsuario));
+            }
+
+            res.message = "No esta autorizado ha hacer eso";
+            res.idError = 99;
 
             return res;
         }
@@ -48,41 +66,74 @@ namespace API.Controllers
         public ResponseCustomer AddCustomer( RequestCustomer customer )
         {
             var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+            var idRole = _httpContextAccessor.GetContainerRoleFromClaims();
 
-            if (ModelState.IsValid)
+
+            ResponseCustomer res = new ResponseCustomer();
+
+            if (idRole == "2")
             {
-                ResponseCustomer res = _cliente.AddCustomer( customer, Int32.Parse(idUsuario));
-                return res;
+                if (ModelState.IsValid)
+                {
+                    res = _cliente.AddCustomer(customer, Int32.Parse(idUsuario));
+                    return res;
+                }
             }
-            return null;
+
+            res.message = "No esta autorizado ha hacer eso";
+            res.idError = 99;
+
+            return res;
         }
         [Authorize]
         [HttpPut("update-customer")]
         public ResponseCustomer UpdateCustomer( RequestCustomer customer )
         {
             var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+            var idRole = _httpContextAccessor.GetContainerRoleFromClaims();
 
-            if (!customer.numero_identificacion.IsNullOrEmpty())
+
+            ResponseCustomer res = new ResponseCustomer();
+
+            if (idRole == "2")
             {
-                ResponseCustomer res = _cliente.UpdateCustomer(customer, Int32.Parse(idUsuario));
-                return res;
-            }
-            else
-            {
-                return new ResponseCustomer
+                if (!customer.numero_identificacion.IsNullOrEmpty())
                 {
-                    idError = 1,
-                    message = "Numero de identificacion es necesario"
-                };
+                    res = _cliente.UpdateCustomer(customer, Int32.Parse(idUsuario));
+                    return res;
+                }
+                else
+                {
+                    return new ResponseCustomer
+                    {
+                        idError = 1,
+                        message = "Numero de identificacion es necesario"
+                    };
+                }
             }
+            res.message = "No esta autorizado ha hacer eso";
+            res.idError = 99;
+
+            return res;
+
+
         }
         [Authorize]
         [HttpDelete("delete-customer")]
         public ResponseCustomer DeleteCustomer( int id )
         {
             var idUsuario = _httpContextAccessor.GetUserIdFromClaims();
+            var idRole = _httpContextAccessor.GetContainerRoleFromClaims();
+            ResponseCustomer res = new ResponseCustomer();
 
-            ResponseCustomer res = _cliente.DeleteCustomer(id, Int32.Parse(idUsuario));
+            if (idRole == "1")
+            {
+                res = _cliente.DeleteCustomer(id, Int32.Parse(idUsuario));
+                return res;
+            }
+            res.message = "No esta autorizado ha hacer eso";
+            res.idError = 99;
+
             return res;
         }
     }
