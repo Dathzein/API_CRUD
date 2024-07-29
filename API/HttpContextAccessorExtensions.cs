@@ -20,7 +20,13 @@ namespace API
             }
             return claim.Value;
         }
-
+        /// <summary>
+        /// Meetodo para obtener usuario del token en la peticion HTTP
+        /// </summary>
+        /// <param name="httpContextAccessor"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static string GetUserIdFromClaims(this IHttpContextAccessor httpContextAccessor)
         {
             if (httpContextAccessor is null)
