@@ -18,6 +18,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Configuracion de cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+               // Reemplaza con el origen permitido
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 var secretKey = builder.Configuration.GetValue<string>("Jwt:SecretKey");
 int expires = builder.Configuration.GetValue<int>("Jwt:Expires");
 byte[] secretKeyBytes = Encoding.ASCII.GetBytes(secretKey);
@@ -52,6 +64,9 @@ builder.Services.AddScoped<ILog, Log>();
 
 var app = builder.Build();
 
+//usar la politica de cros creada para usar en el front
+app.UseCors("CorsPolicy");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -63,6 +78,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

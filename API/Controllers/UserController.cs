@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.Contracts;
 using Models.Dtos;
 
 namespace API.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -36,7 +38,7 @@ namespace API.Controllers
                 return register;
 
         }
-
+        
         [AllowAnonymous]
         [HttpPost("login")]
         public LoginResponse Login(LoginRequest request)
